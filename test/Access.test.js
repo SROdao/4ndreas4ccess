@@ -36,4 +36,41 @@ contract('Access', (accounts) => {
             assert.equal(symbol, '4CCESS')
         })
     })
+
+    describe(`minting`, async () => {
+        it(`creates a new token when tokenId is unique`, async () => {
+            const result = await contract.mint(1)
+
+            const totalSupply = await contract.totalSupply()
+            const event = result.logs[0].args
+            
+            assert.equal(totalSupply, 1)
+            assert.equal(event.tokenId.toNumber(), 1, 'ID is correct')
+            assert.equal(event.from, '0x0000000000000000000000000000000000000000', 'FROM is correct')
+            assert.equal(event.to, accounts[0], 'TO is correct') //accounts are passed in by Ganache
+
+            // FAILURE: cannot mint same ID twice
+            await contract.mint(1).should.be.rejected;
+        })
+    })
+
+    describe(`indexing`, async () => {
+        it(`lists ids`, async () => {
+            //Mint 3 tokens
+            await contract.mint(2)
+            await contract.mint(3)
+            await contract.mint(4)
+            
+            const totalSupply = await contract.totalSupply()
+
+            const result = []
+            for(let i=0; i<=totalSupply-1; i++) {
+                const id = await contract.ids(i)
+                result.push(id)
+            }
+            
+            let expected = [1, 2, 3, 4]
+            assert.equal(result.join(','), expected.join(','))
+        })
+    })
 })
