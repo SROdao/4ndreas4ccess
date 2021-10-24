@@ -1,8 +1,8 @@
 {
-  "name": "eth-marketplace",
+  "name": "4ndreas-4ccess",
   "version": "0.1.0",
-  "description": "An Ethereum Marketplace",
-  "author": "gregory@dappuniversity.com",
+  "description": "4ndreas 4ccess",
+  "author": "",
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.2",
     "all": "^0.0.0",
