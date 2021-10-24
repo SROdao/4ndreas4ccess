@@ -15,12 +15,24 @@ class App extends Component {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
       await window.ethereum.enable()
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider)
     } else {
       window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
     }
   }
+
+  // TODO: replace deprecated window.ethereum.enable() method
+  // if (window.ethereum) {
+  //   try {
+  //     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  //     setAccounts(accounts);
+  //   } catch (error) {
+  //     if (error.code === 4001) {
+  //       // User rejected request
+  //     }
+  
+  //     setError(error);
+  //   }
+  // }
 
   async loadBlockchainData() {
     const web3 = window.web3
@@ -37,15 +49,20 @@ class App extends Component {
       this.setState({ contract })
       const totalSupply = await contract.methods.totalSupply().call()
       this.setState({ totalSupply })
-      for (let i = 0; i <= totalSupply - 1; i++) {
-        const id = await contract.methods.ids(i).call()
-        this.setState({
-          ids: [...this.state.ids, id]
-        })
-      }
+      // for (let i = 0; i <= totalSupply - 1; i++) {
+      //   const id = await contract.methods.ids(i).call()
+      //   this.setState({
+      //     ids: [...this.state.ids, id]
+      //   })
+      // }
     } else {
       window.alert('Smart contract not deployed to detected network.')
     }
+  }
+
+  mint = () => {
+    this.state.contract.methods.mint().send({ from: this.state.account })
+      // .once('receipt', (receipt) => {})
   }
 
   constructor(props) {
@@ -54,7 +71,7 @@ class App extends Component {
       account: '',
       contract: null,
       totalSupply: 0,
-      ids: [],
+      // ids: [],
     }
   }
 
@@ -95,6 +112,7 @@ class App extends Component {
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto p-5">
                 <h3>{444 - Number(this.state.totalSupply) + "/444"}</h3>
+                <button onClick={this.mint}>MINT</button>
               </div>
             </main>
           </div>
