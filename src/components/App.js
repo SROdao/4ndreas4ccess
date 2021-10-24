@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import logo from '../logo.png';
 import './App.css';
+import Access from '../abis/Access.json'
 
 class App extends Component {
 
@@ -26,12 +27,34 @@ class App extends Component {
     //Load Account
     const accounts = await web3.eth.getAccounts()
     this.setState({ account: accounts[0] })
+
+    const networkId = await web3.eth.net.getId()
+    const networkData = Access.networks[networkId]
+    if (networkData) {
+      const abi = Access.abi
+      const address = networkData.address
+      const contract = new web3.eth.Contract(abi, address)
+      this.setState({ contract })
+      const totalSupply = await contract.methods.totalSupply().call()
+      this.setState({ totalSupply })
+      for (let i = 0; i <= totalSupply - 1; i++) {
+        const id = await contract.methods.ids(i).call()
+        this.setState({
+          ids: [...this.state.ids, id]
+        })
+      }
+    } else {
+      window.alert('Smart contract not deployed to detected network.')
+    }
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      account: ''
+      account: '',
+      contract: null,
+      totalSupply: 0,
+      ids: [],
     }
   }
 
@@ -68,6 +91,14 @@ class App extends Component {
               </div>
             </main>
           </div>
+          <div className="row">
+            <main role="main" className="col-lg-12 d-flex text-center">
+              <div className="content mr-auto ml-auto p-5">
+                <h3>{444 - Number(this.state.totalSupply) + "/444"}</h3>
+              </div>
+            </main>
+          </div>
+
         </div>
       </div>
     );
