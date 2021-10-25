@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import artwork1 from '../artworks/artwork1.png';
 import artwork2 from '../artworks/artwork2.png';
