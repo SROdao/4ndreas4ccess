@@ -15,10 +15,13 @@ function App() {
     const [account, setAccount] = useState("")
     const [contract, setContract] = useState(null)
     const [totalSupply, setTotalSupply] = useState(0)
+    const [artworks, setArtworks] = useState([artwork1, artwork2, artwork3, artwork4, artwork5, artwork6, artwork7])
+    const [artwork, setArtwork] = useState(null)
 
     useEffect(() => {
         loadWeb3()
         loadBlockchainData()
+        setRandomArtwork()
     }, []);
 
     const loadWeb3 = async () => {
@@ -61,6 +64,12 @@ function App() {
         // .once('receipt', (receipt) => {})
     }
 
+    const setRandomArtwork = () => {
+        const randomIndex = Math.floor(Math.random() * artworks.length)
+        const randomArtwork = artworks[randomIndex]
+        setArtwork(randomArtwork)
+    }
+
     return (
         <div>
           <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
@@ -82,7 +91,7 @@ function App() {
             <div className="row">
               <main role="main" className="col-lg-12 d-flex text-center">
                 <div className="content mr-auto ml-auto">
-                    <img src={artwork1} className="App-logo" alt="4ccess" />
+                    <img src={artwork} onClick={setRandomArtwork} className="App-logo" alt="4ccess" />
                   <h1>Mint 4ccess for Exclusive Content</h1>
                 </div>
               </main>
