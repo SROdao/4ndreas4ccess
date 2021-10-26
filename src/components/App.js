@@ -60,8 +60,13 @@ function App() {
     }
 
     const mint = () => {
+      const allMinted = Number(totalSupply) >= 444;
+      if (allMinted) {
+        alert('minting has finished');
+      } else {
         contract.methods.mint().send({ from: account })
         // .once('receipt', (receipt) => {})
+      }
     }
 
     const setRandomArtwork = () => {

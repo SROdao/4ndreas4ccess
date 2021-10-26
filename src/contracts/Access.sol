@@ -5,25 +5,21 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract Access is ERC721, ERC721Enumerable {
-    // uint256[] public ids;
-    // mapping(uint256 => bool) _idExists;
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIds;
+    uint public count;
 
     constructor() ERC721("4ccess", "4CCESS") {}
 
     // TODO: restrict the ownership of this function to a minter/admin (openzeppelin)
     // TODO: pass in a unique ID and add mapping (tokenUri, metadata)
     function mint() public {
-        //get unique id somehow
+        require(count < 444, "Minting has ended.");
         _tokenIds.increment();
-
-        // require(!_colorExists[_color]) 
-        // ids.push(_id);
 
         // to address and token id passed in below
         _safeMint(msg.sender, _tokenIds.current());
-        // _idExists[_id] = true;
+        count++;
     }
 
 
