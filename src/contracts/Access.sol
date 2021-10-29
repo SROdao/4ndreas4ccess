@@ -3,8 +3,9 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Access is ERC721, ERC721Enumerable {
+contract Access is ERC721, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIds;
     uint public count;
@@ -21,6 +22,8 @@ contract Access is ERC721, ERC721Enumerable {
         _safeMint(msg.sender, _tokenIds.current());
         count++;
     }
+
+    //TODO: add more methods and use onlyOwner modifier
 
 
     // Overriden methods implemented from ERC721Enumerable
